@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCash Loans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { margin: 0; background-color: #f4f5f7; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 400px; background: #f4f5f7; padding: 20px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 10px; }
+        .logo { font-size: 24px; font-weight: 700; }
+        .logo .eco { color: #0050A0; }
+        .logo .cash { color: #E31837; }
+        .menu-icon { font-size: 24px; cursor: pointer; color: #333; }
+
+        .card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        
+        h1 { font-size: 24px; color: #1a1a1a; margin: 0 0 5px 0; line-height: 1.2; }
+        .subtitle { font-size: 12px; color: #666; margin-bottom: 25px; }
+
+        .calc-box { background: #f8f9fc; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .calc-title { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #333; }
+        
+        .slider-group { margin-bottom: 20px; }
+        .slider-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .slider-label { font-size: 14px; color: #444; }
+        .slider-value { font-size: 14px; font-weight: 700; color: #6B4EFF; }
+        
+        input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; margin-bottom: 5px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: white; border: 2px solid #ccc; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: -6px; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #e0e0e0; border-radius: 3px; }
+        
+        .slider-limits { display: flex; justify-content: space-between; font-size: 10px; color: #888; }
+
+        .result-box { background: white; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .result-label { font-size: 14px; color: #666; }
+        .result-value { font-size: 24px; font-weight: 700; color: #6B4EFF; }
+
+        .btn-main { width: 100%; background-color: #6B4EFF; color: white; font-size: 14px; font-weight: 700; padding: 16px; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(107, 78, 255, 0.4); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo"><span class="eco">Eco</span><span class="cash">Cash</span></div>
+            <div class="menu-icon">☰</div>
+        </div>
+
+        <div class="card">
+            <h1>Get Your Loan<br>Approved Fast</h1>
+            <div class="subtitle">Quick approval · Competitive rates · Flexible terms</div>
+
+            <div class="calc-box">
+                <div class="calc-title">Loan Calculator</div>
+                
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-label">Loan Amount</span>
+                        <span class="slider-value" id="amountVal">$100</span>
+                    </div>
+                    <input type="range" id="amountSlider" min="100" max="5000" step="100" value="100" oninput="calculate()">
+                    <div class="slider-limits"><span>$100</span><span>$5,000</span></div>
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-label">Loan Term</span>
+                        <span class="slider-value" id="termVal">2 months</span>
+                    </div>
+                    <input type="range" id="termSlider" min="1" max="12" step="1" value="2" oninput="calculate()">
+                    <div class="slider-limits"><span>1 month</span><span>12 months</span></div>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-label">Monthly Payment</div>
+                    <div class="result-value" id="paymentVal">$54.00</div>
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="
+                sessionStorage.setItem('loanAmount', document.getElementById('amountSlider').value);
+                window.location.href = 'application.html';
+            ">APPLY NOW</button>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            var amount = parseFloat(document.getElementById('amountSlider').value);
+            var term = parseFloat(document.getElementById('termSlider').value);
+            
+            document.getElementById('amountVal').innerText = '$' + amount.toLocaleString();
+            document.getElementById('termVal').innerText = term + (term === 1 ? ' month' : ' months');
+
+            // 8% flat interest per month (to match screenshot: $100 over 2 months = $54/mo)
+            var interest = amount * 0.08 * term;
+            var total = amount + interest;
+            var monthly = total / term;
+
+            document.getElementById('paymentVal').innerText = '$' + monthly.toFixed(2);
+        }
+        calculate();
+    </script>
+</body>
+                      </html>
